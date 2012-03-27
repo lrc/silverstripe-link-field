@@ -54,6 +54,7 @@ class LinkField extends DBField implements CompositeDBField {
 //		Debug::dump($record);
 		
 		if ($value instanceof LinkField && $value->hasValue()) {
+			
 //			Debug::dump('$value');
 //			Debug::dump($value);
 			$this->setPageID($value->getPageID(), $markChanged);
@@ -206,7 +207,7 @@ class LinkField extends DBField implements CompositeDBField {
 	}
 	
 	public function getURL() {
-		return ($this->Page()) ? $this->Page()->Link() : $this->getCustomURL();
+		return trim(($this->Page()) ? $this->Page()->Link() : $this->getCustomURL());
 	}
 	
 	public function __toString() {
