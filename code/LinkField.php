@@ -62,8 +62,8 @@ class LinkField extends DBField implements CompositeDBField {
 		} elseif ( $record && ( isset($record[$this->name . 'PageID']) || isset($record[$this->name . 'CustomURL']) ) ) {
 //			Debug::dump('$record');
 //			Debug::dump($record);
-			$this->setPageID($record[$this->name . 'PageID'], $markChanged);
-			$this->setCustomURL($record[$this->name . 'CustomURL'], $markChanged);
+			$this->setPageID((isset($record[$this->name . 'PageID'])) ? $record[$this->name . 'PageID'] : null, $markChanged);
+			$this->setCustomURL((isset($record[$this->name . 'CustomURL'])) ? $record[$this->name . 'CustomURL'] : null, $markChanged);
 			if($markChanged) $this->isChanged = true;
 		} else if (is_array($value)) {
 //			Debug::dump('$value (array)');
