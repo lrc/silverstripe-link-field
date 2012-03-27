@@ -51,28 +51,16 @@ class LinkField extends DBField implements CompositeDBField {
 	 */
 	function setValue($value, $record = null, $markChanged = true){
 		
-//		Debug::dump($record);
-		
 		if ($value instanceof LinkField && $value->hasValue()) {
 			
-//			Debug::dump('$value');
-//			Debug::dump($value);
 			$this->setPageID($value->getPageID(), $markChanged);
 			$this->setCustomURL($value->getCustomURL(), $markChanged);
 			if($markChanged) $this->isChanged = true;
 		} elseif ( $record && ( isset($record[$this->name . 'PageID']) || isset($record[$this->name . 'CustomURL']) ) ) {
-//			Debug::dump('$record');
-//			Debug::dump($record);
-			if (array_key_exists($this->name . 'PageID', $record)) {
-				$this->setPageID($record[$this->name . 'PageID'], $markChanged);
-			}
-			if (array_key_exists($this->name . 'CustomURL', $record)) {
-				$this->setCustomURL($record[$this->name . 'CustomURL'], $markChanged);
-			}
+			$this->setPageID((isset($record[$this->name . 'PageID'])) ? $record[$this->name . 'PageID'] : null, $markChanged);
+			$this->setCustomURL((isset($record[$this->name . 'CustomURL'])) ? $record[$this->name . 'CustomURL'] : null, $markChanged);
 			if($markChanged) $this->isChanged = true;
 		} else if (is_array($value)) {
-//			Debug::dump('$value (array)');
-//			Debug::dump($value);
 			if (array_key_exists('PageID', $value)) {
 				$this->setPageID($value['PageID'], $markChanged);
 			}
@@ -82,7 +70,7 @@ class LinkField extends DBField implements CompositeDBField {
 			}
 			if($markChanged) $this->isChanged = true;
 		} else {
-//			user_error('Invalid value in Money->setValue()', E_USER_ERROR);
+			user_error('Invalid value in LinkField->setValue()', E_USER_ERROR);
 		}
 	}
 	
