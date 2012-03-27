@@ -31,8 +31,8 @@ class LinkFormField extends FormField {
 	function Field() {
 		Requirements::javascript(self::$module_dir . '/js/admin.js');
 		return "<div class=\"fieldgroup\">" .
-			"<div id=\"fieldgroupFieldPage\" class=\"fieldgroupField\">" . $this->fieldPageID->SmallFieldHolder() . "</div>" . 
-			"<div id=\"fieldgroupFieldCustomURL\" class=\"fieldgroupField\">" . $this->fieldCustomURL->SmallFieldHolder() . "</div>" . 
+			"<div class=\"fieldgroupField link-form-field-page\">" . $this->fieldPageID->SmallFieldHolder() . "</div>" . 
+			"<div class=\"fieldgroupField link-form-field-url\">" . $this->fieldCustomURL->SmallFieldHolder() . "</div>" . 
 		"</div>";
 	}
 	
