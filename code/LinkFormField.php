@@ -6,7 +6,7 @@
  */
 class LinkFormField extends FormField {
 	
-	static $module_dir = 'silverstripe-link-field';
+	static $module_dir = ''; // This is initially set in _config.php
 	
 	/**
 	 * @var FormField
@@ -20,9 +20,7 @@ class LinkFormField extends FormField {
 	
 	function __construct($name, $title = null, $value = null, $form = null) {
 		// naming with underscores to prevent values from actually being saved somewhere
-//		$name, $title = null, $value = '', $maxLength = null, $form = null
-		$this->fieldCustomURL = new TextField("{$name}[CustomURL]", ' External URL: ', '', 300, $form);
-//		$name, $title = null, $sourceObject = 'Group', $keyField = 'ID', $labelField = 'Title', $showSearch = false
+		$this->fieldCustomURL = new TextField("{$name}[CustomURL]", ' URL', '', 300, $form);
 		$this->fieldPageID = new TreeDropdownField("{$name}[PageID]", '', 'SiteTree', 'ID', 'Title');
 		$this->fieldPageID->setForm($form);
 		parent::__construct($name, $title, $value, $form);
@@ -38,10 +36,10 @@ class LinkFormField extends FormField {
 	 * @return string
 	 */
 	function Field($properties = array()) {
-		Requirements::javascript(self::$module_dir . '/js/admin.js');
-		return "<div class=\"fieldgroup\">" .
-			"<div class=\"fieldgroupField link-form-field-page\">" . $this->fieldPageID->SmallFieldHolder() . "</div>" . 
-			"<div class=\"fieldgroupField link-form-field-url\">" . $this->fieldCustomURL->SmallFieldHolder() . "</div>" . 
+		Requirements::javascript(self::$module_dir . '/js/LinkFormField.js');
+		return "<div class=\"fieldgroup LinkFormField \">" .
+			"<div class=\"fieldgroupField LinkFormFieldPageID\">" . $this->fieldPageID->SmallFieldHolder() . "</div>" . 
+			"<div class=\"fieldgroupField LinkFormFieldCustomURL\">" . $this->fieldCustomURL->SmallFieldHolder() . "</div>" . 
 		"</div>";
 	}
 	
@@ -100,6 +98,12 @@ class LinkFormField extends FormField {
 			$this->fieldCustomURL = $this->fieldCustomURL->performReadonlyTransformation();
 		}
 	}
+	
+	public function tree($request) {
+		return str_replace("<ul class=\"tree\">\n", "<ul class=\"tree\">\n" . '<li id="selector-' . $this->name . '[PageID]-0"><a>(None / Custom URL)</a></li>', $this->fieldPageID->tree($request));
+		
+	}
+	
 }
 
 ?>

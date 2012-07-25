@@ -51,7 +51,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 */
 	function setValue($value, $record = null, $markChanged = true){
 		
-		if ($value instanceof LinkField && $value->hasValue()) {
+		if ($value instanceof LinkField && $value->hasValue($this)) {
 			$this->setPageID($value->getPageID());
 			$this->setCustomURL($value->getCustomURL());
 		} elseif ( $record && ( isset($record[$this->name . 'PageID']) || isset($record[$this->name . 'CustomURL']) ) ) {
@@ -99,13 +99,13 @@ class LinkField extends DBField implements CompositeDBField {
 		if($this->getPageID()) {
 			$manipulation['fields'][$this->name.'PageID'] = $this->prepValueForDB((int)$this->getPageID());
 		} else {
-			$manipulation['fields'][$this->name.'PageID'] = DBField::create('Int', $this->getPageID())->nullValue();
+			$manipulation['fields'][$this->name.'PageID'] = DBField::create_field('Int', $this->getPageID())->nullValue();
 		}
 		
 		if($this->getCustomURL()) {
 			$manipulation['fields'][$this->name.'CustomURL'] = $this->prepValueForDB($this->getCustomURL());
 		} else {
-			$manipulation['fields'][$this->name.'CustomURL'] = DBField::create('Varchar', $this->getCustomURL())->nullValue();
+			$manipulation['fields'][$this->name.'CustomURL'] = DBField::create_field('Varchar', $this->getCustomURL())->nullValue();
 		}
 	}
 	
@@ -191,7 +191,7 @@ class LinkField extends DBField implements CompositeDBField {
 	}
 	
 	public function getURL() {
-		return trim(($this->Page()) ? $this->Page()->Link() : $this->getCustomURL());
+		return ( $this->Page() ) ? $this->Page()->Link() : $this->getCustomURL();
 	}
 	
 	public function __toString() {
