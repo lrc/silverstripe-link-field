@@ -52,25 +52,21 @@ class LinkField extends DBField implements CompositeDBField {
 	function setValue($value, $record = null, $markChanged = true){
 		
 		if ($value instanceof LinkField && $value->hasValue()) {
-			
-			$this->setPageID($value->getPageID(), $markChanged);
-			$this->setCustomURL($value->getCustomURL(), $markChanged);
-			if($markChanged) $this->isChanged = true;
+			$this->setPageID($value->getPageID());
+			$this->setCustomURL($value->getCustomURL());
 		} elseif ( $record && ( isset($record[$this->name . 'PageID']) || isset($record[$this->name . 'CustomURL']) ) ) {
-			$this->setPageID((isset($record[$this->name . 'PageID'])) ? $record[$this->name . 'PageID'] : null, $markChanged);
-			$this->setCustomURL((isset($record[$this->name . 'CustomURL'])) ? $record[$this->name . 'CustomURL'] : null, $markChanged);
-			if($markChanged) $this->isChanged = true;
+			$this->setPageID((isset($record[$this->name . 'PageID'])) ? $record[$this->name . 'PageID'] : null);
+			$this->setCustomURL((isset($record[$this->name . 'CustomURL'])) ? $record[$this->name . 'CustomURL'] : null);
 		} else if (is_array($value)) {
 			if (array_key_exists('PageID', $value)) {
-				$this->setPageID($value['PageID'], $markChanged);
+				$this->setPageID($value['PageID']);
 			}
 			
 			if (array_key_exists('CustomURL', $value)) {
-				$this->setCustomURL($value['CustomURL'], $markChanged);
+				$this->setCustomURL($value['CustomURL']);
 			}
-			if($markChanged) $this->isChanged = true;
 		} else {
-			user_error('Invalid value in LinkField->setValue()', E_USER_ERROR);
+//			user_error('Invalid value in LinkField->setValue()', E_USER_ERROR);
 		}
 	}
 	
@@ -151,7 +147,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @return boolean
 	 */
-	function hasValue(){
+	function hasValue($field, $arguments = null, $cache = true){
 		return ($this->page_id || $this->custom_url);
 	}
 	

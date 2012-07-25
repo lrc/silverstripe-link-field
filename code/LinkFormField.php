@@ -20,15 +20,24 @@ class LinkFormField extends FormField {
 	
 	function __construct($name, $title = null, $value = null, $form = null) {
 		// naming with underscores to prevent values from actually being saved somewhere
-		$this->fieldCustomURL = new TextField("{$name}[CustomURL]", ' External URL: ');
-		$this->fieldPageID = new SimpleTreeDropdownField("{$name}[PageID]", '', 'SiteTree', '', 'Title', null, "(External/Custom URL)");
+//		$name, $title = null, $value = '', $maxLength = null, $form = null
+		$this->fieldCustomURL = new TextField("{$name}[CustomURL]", ' External URL: ', '', 300, $form);
+//		$name, $title = null, $sourceObject = 'Group', $keyField = 'ID', $labelField = 'Title', $showSearch = false
+		$this->fieldPageID = new TreeDropdownField("{$name}[PageID]", '', 'SiteTree', 'ID', 'Title');
+		$this->fieldPageID->setForm($form);
 		parent::__construct($name, $title, $value, $form);
+	}
+	
+	function setForm($form) {
+		$this->fieldPageID->setForm($form);
+		$this->fieldCustomURL->setForm($form);
+		return parent::setForm($form);
 	}
 	
 	/**
 	 * @return string
 	 */
-	function Field() {
+	function Field($properties = array()) {
 		Requirements::javascript(self::$module_dir . '/js/admin.js');
 		return "<div class=\"fieldgroup\">" .
 			"<div class=\"fieldgroupField link-form-field-page\">" . $this->fieldPageID->SmallFieldHolder() . "</div>" . 
@@ -36,11 +45,8 @@ class LinkFormField extends FormField {
 		"</div>";
 	}
 	
-	function setValue($val, $eh) {
-//		Debug::dump($eh);
-//		Debug::backtrace();
+	function setValue($val) {
 		$this->value = $val;
-//		Debug::dump($val);
 		if(is_array($val)) {
 			$this->fieldPageID->setValue($val['PageID']);
 			$this->fieldCustomURL->setValue($val['CustomURL']);
@@ -59,7 +65,7 @@ class LinkFormField extends FormField {
 	 *
 	 * (see @link MoneyFieldTest_CustomSetter_Object for more information)
 	 */
-	function saveInto($dataObject) {
+	function saveInto(DataObjectInterface $dataObject) {
 		
 		$fieldName = $this->name;
 		if($dataObject->hasMethod("set$fieldName")) {
@@ -71,11 +77,6 @@ class LinkFormField extends FormField {
 			$dataObject->$fieldName->setPageID($this->fieldPageID->Value()); 
 			$dataObject->$fieldName->setCustomURL($this->fieldCustomURL->Value());
 		}
-		
-//		Debug::dump($dataObject->$fieldName->getPageID());
-//		Debug::dump($dataObject->$fieldName->getCustomURL());
-//		Debug::dump($dataObject);
-//		die;
 	}
 
 	/**
