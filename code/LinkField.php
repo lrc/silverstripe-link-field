@@ -70,7 +70,7 @@ class LinkField extends DBField implements CompositeDBField {
 			}
 			if($markChanged) $this->isChanged = true;
 		} else {
-			user_error('Invalid value in LinkField->setValue()', E_USER_ERROR);
+//			user_error('Invalid value in LinkField->setValue()', E_USER_ERROR);
 		}
 	}
 	
