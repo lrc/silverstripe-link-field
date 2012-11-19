@@ -37,10 +37,7 @@ class LinkFormField extends FormField {
 	}
 	
 	function setValue($val, $eh) {
-//		Debug::dump($eh);
-//		Debug::backtrace();
 		$this->value = $val;
-//		Debug::dump($val);
 		if(is_array($val)) {
 			$this->fieldPageID->setValue($val['PageID']);
 			$this->fieldCustomURL->setValue($val['CustomURL']);
@@ -71,11 +68,6 @@ class LinkFormField extends FormField {
 			$dataObject->$fieldName->setPageID($this->fieldPageID->Value()); 
 			$dataObject->$fieldName->setCustomURL($this->fieldCustomURL->Value());
 		}
-		
-//		Debug::dump($dataObject->$fieldName->getPageID());
-//		Debug::dump($dataObject->$fieldName->getCustomURL());
-//		Debug::dump($dataObject);
-//		die;
 	}
 
 	/**
