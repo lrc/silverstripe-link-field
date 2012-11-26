@@ -80,7 +80,7 @@ class LinkFormField extends FormField {
 	/**
 	 * Returns a readonly version of this field.
 	 */
-	function performReadonlyTransformation() {
+	public function performReadonlyTransformation() {
 		$clone = clone $this;
 		$clone->setReadonly(true);
 		return $clone;
@@ -90,7 +90,7 @@ class LinkFormField extends FormField {
 	 * @todo Implement removal of readonly state with $bool=false
 	 * @todo Set readonly state whenever field is recreated, e.g. in setAllowedCurrencies()
 	 */
-	function setReadonly($bool) {
+	public function setReadonly($bool) {
 		parent::setReadonly($bool);
 		
 		if($bool) {
