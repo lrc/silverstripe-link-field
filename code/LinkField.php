@@ -202,4 +202,9 @@ class LinkField extends DBField implements CompositeDBField {
 		return $this->getURL();
 	}
 	
+	function Absolute() {
+		$relative = $this->getURL();
+		return (Director::is_site_url($relative) && Director::is_relative_url($relative)) ? Controller::join_links(Director::protocolAndHost(), $relative) : $relative;
+	}
+	
 }
