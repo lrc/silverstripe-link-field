@@ -19,7 +19,9 @@
 			
 			// Fix bug in SS
 			var $tree = $this.find('.TreeDropdownField');
-			$tree.data('urlTree', $tree.data('urlTree').replace('[PageID]',''));
+			if ($tree.data('urlTree')) {
+				$tree.data('urlTree', $tree.data('urlTree').replace('[PageID]',''));
+			}
 		}
 	});
 	
