@@ -76,9 +76,7 @@ class LinkFormField extends FormField {
 	 * Returns a readonly version of this field.
 	 */
 	public function performReadonlyTransformation() {
-		$clone = clone $this;
-		$clone->setReadonly(true);
-		return $clone;
+		return new ReadonlyField($this->Name, $this->Title, $this->Value);
 	}
 	
 	/**
