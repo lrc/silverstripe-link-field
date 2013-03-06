@@ -55,13 +55,8 @@ class LinkFormField extends FormField {
 	}
 	
 	/**
-	 * 30/06/2009 - Enhancement: 
-	 * SaveInto checks if set-methods are available and use them 
-	 * instead of setting the values in the money class directly. saveInto
-	 * initiates a new Money class object to pass through the values to the setter
-	 * method.
-	 *
-	 * (see @link MoneyFieldTest_CustomSetter_Object for more information)
+	 * SaveInto checks if set-methods are available and use them instead of setting the values directly. saveInto
+	 * initiates a new LinkField class object to pass through the values to the setter method.
 	 */
 	function saveInto(DataObjectInterface $dataObject) {
 		
