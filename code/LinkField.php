@@ -2,6 +2,9 @@
 
 /**
  * A link field which will store a link in the database.
+ * 
+ * @author Simon Elvery
+ * @package silverstripe-link-field
  */
 class LinkField extends DBField implements CompositeDBField {
 	
@@ -52,18 +55,27 @@ class LinkField extends DBField implements CompositeDBField {
 	function setValue($value, $record = null, $markChanged = true){
 		
 		if ($value instanceof LinkField && $value->hasValue($this)) {
-			$this->setPageID($value->getPageID());
-			$this->setCustomURL($value->getCustomURL());
-		} elseif ( $record && ( isset($record[$this->name . 'PageID']) || isset($record[$this->name . 'CustomURL']) ) ) {
-			$this->setPageID((isset($record[$this->name . 'PageID'])) ? $record[$this->name . 'PageID'] : null);
-			$this->setCustomURL((isset($record[$this->name . 'CustomURL'])) ? $record[$this->name . 'CustomURL'] : null);
+			$this->setPageID($value->getPageID(), $markChanged);
+			$this->setCustomURL($value->getCustomURL(), $markChanged);
+		} elseif ( 
+			$record && 
+			( isset($record[$this->name . 'PageID']) || isset($record[$this->name . 'CustomURL']) ) 
+		) {
+			$this->setPageID(
+				(isset($record[$this->name . 'PageID'])) ? $record[$this->name . 'PageID'] : null, 
+				$markChanged
+			);
+			$this->setCustomURL(
+				(isset($record[$this->name . 'CustomURL'])) ? $record[$this->name . 'CustomURL'] : null,
+				$markChanged
+			);
 		} else if (is_array($value)) {
 			if (array_key_exists('PageID', $value)) {
-				$this->setPageID($value['PageID']);
+				$this->setPageID($value['PageID'], $markChanged);
 			}
 			
 			if (array_key_exists('CustomURL', $value)) {
-				$this->setCustomURL($value['CustomURL']);
+				$this->setCustomURL($value['CustomURL'], $markChanged);
 			}
 		} else {
 //			user_error('Invalid value in LinkField->setValue()', E_USER_ERROR);
@@ -95,17 +107,19 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @param array $manipulation
 	 */
-	function writeToManipulation(&$manipulation){
+	function writeToManipulation(&$manipulation) {
 		if($this->getPageID()) {
 			$manipulation['fields'][$this->name.'PageID'] = $this->prepValueForDB((int)$this->getPageID());
 		} else {
-			$manipulation['fields'][$this->name.'PageID'] = DBField::create_field('Int', $this->getPageID())->nullValue();
+			$manipulation['fields'][$this->name.'PageID'] = 
+					DBField::create_field('Int', $this->getPageID())->nullValue();
 		}
 		
 		if($this->getCustomURL()) {
 			$manipulation['fields'][$this->name.'CustomURL'] = $this->prepValueForDB($this->getCustomURL());
 		} else {
-			$manipulation['fields'][$this->name.'CustomURL'] = DBField::create_field('Varchar', $this->getCustomURL())->nullValue();
+			$manipulation['fields'][$this->name.'CustomURL'] = 
+					DBField::create_field('Varchar', $this->getCustomURL())->nullValue();
 		}
 	}
 	
@@ -204,7 +218,9 @@ class LinkField extends DBField implements CompositeDBField {
 	
 	function Absolute() {
 		$relative = $this->getURL();
-		return (Director::is_site_url($relative) && Director::is_relative_url($relative)) ? Controller::join_links(Director::protocolAndHost(), $relative) : $relative;
+		return (Director::is_site_url($relative) && Director::is_relative_url($relative)) 
+			? Controller::join_links(Director::protocolAndHost(), $relative) 
+			: $relative;
 	}
 	
 }

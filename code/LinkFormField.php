@@ -38,8 +38,12 @@ class LinkFormField extends FormField {
 	function Field($properties = array()) {
 		Requirements::javascript(self::$module_dir . '/js/LinkFormField.js');
 		return "<div class=\"fieldgroup LinkFormField \">" .
-			"<div class=\"fieldgroupField LinkFormFieldPageID\">" . $this->fieldPageID->SmallFieldHolder() . "</div>" . 
-			"<div class=\"fieldgroupField LinkFormFieldCustomURL\">" . $this->fieldCustomURL->SmallFieldHolder() . "</div>" . 
+			"<div class=\"fieldgroupField LinkFormFieldPageID\">" . 
+				$this->fieldPageID->SmallFieldHolder() . 
+			"</div>" . 
+			"<div class=\"fieldgroupField LinkFormFieldCustomURL\">" . 
+				$this->fieldCustomURL->SmallFieldHolder() . 
+			"</div>" . 
 		"</div>";
 	}
 	
@@ -93,10 +97,11 @@ class LinkFormField extends FormField {
 	}
 	
 	public function tree($request) {
-		return str_replace("<ul class=\"tree\">\n", "<ul class=\"tree\">\n" . '<li id="selector-' . $this->name . '[PageID]-0"><a>(None / Custom URL)</a></li>', $this->fieldPageID->tree($request));
-		
+		return str_replace(
+			"<ul class=\"tree\">\n", 
+			"<ul class=\"tree\">\n" . '<li id="selector-' . $this->name . '[PageID]-0"><a>(None / Custom URL)</a></li>',
+			$this->fieldPageID->tree($request)
+		);
 	}
-	
 }
 
-?>
