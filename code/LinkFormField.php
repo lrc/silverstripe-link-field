@@ -8,6 +8,14 @@ class LinkFormField extends FormField {
 	
 	static $module_dir = ''; // This is initially set in _config.php
 	
+	public static $url_handlers = array(
+		'$Action!/$ID' => '$Action'
+	);
+	
+	public static $allowed_actions = array(
+		'tree'
+	);
+	
 	/**
 	 * @var FormField
 	 */
