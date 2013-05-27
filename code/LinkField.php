@@ -205,7 +205,7 @@ class LinkField extends DBField implements CompositeDBField {
 	}
 	
 	public function getURL() {
-		return ( $this->Page() ) ? $this->Page()->Link() : $this->getCustomURL();
+		return ( $this->Page() ) ? $this->Page()->Link() : Convert::raw2htmlatt($this->getCustomURL());
 	}
 	
 	public function __toString() {
