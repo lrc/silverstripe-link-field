@@ -54,7 +54,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 */
 	function setValue($value, $record = null, $markChanged = true){
 		
-		if ($value instanceof LinkField && $value->hasValue($this)) {
+		if ($value instanceof LinkField && $value->exists()) {
 			$this->setPageID($value->getPageID(), $markChanged);
 			$this->setCustomURL($value->getCustomURL(), $markChanged);
 		} elseif ( 
@@ -161,7 +161,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @return boolean
 	 */
-	function hasValue($field, $arguments = null, $cache = true){
+	function exists(){
 		return ($this->page_id || $this->custom_url);
 	}
 	
