@@ -141,7 +141,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * @return array
 	 */
 	function compositeDatabaseFields(){
-		return self::$composite_db;
+		return static::$composite_db;
 	}
 	
 	/**
