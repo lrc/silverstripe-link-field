@@ -39,6 +39,12 @@ class LinkFormField extends FormField {
 		$this->fieldCustomURL->setForm($form);
 		return parent::setForm($form);
 	}
+
+	function setName($name){
+		$this->fieldPageID->setName("{$name}[PageID]");
+		$this->fieldCustomURL->setName("{$name}[CustomURL]");
+		return parent::setName($name);
+	}
 	
 	/**
 	 * @return string
