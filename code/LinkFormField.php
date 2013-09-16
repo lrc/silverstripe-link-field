@@ -6,13 +6,13 @@
  */
 class LinkFormField extends FormField {
 	
-	static $module_dir = ''; // This is initially set in _config.php
+	public static $module_dir = ''; // This is initially set in _config.php
 	
-	public static $url_handlers = array(
+	private static $url_handlers = array(
 		'$Action!/$ID' => '$Action'
 	);
-	
-	public static $allowed_actions = array(
+
+	private static $allowed_actions = array(
 		'tree'
 	);
 	
@@ -26,21 +26,21 @@ class LinkFormField extends FormField {
 	 */
 	protected $fieldCustomURL = null;
 	
-	function __construct($name, $title = null, $value = null, $form = null) {
+	public function __construct($name, $title = null, $value = null, $form = null) {
 		// naming with underscores to prevent values from actually being saved somewhere
 		$this->fieldCustomURL = new TextField("{$name}[CustomURL]", ' URL', '', 300, $form);
 		$this->fieldPageID = new TreeDropdownField("{$name}[PageID]", '', 'SiteTree', 'ID', 'Title');
 		$this->fieldPageID->setForm($form);
 		parent::__construct($name, $title, $value, $form);
 	}
-	
-	function setForm($form) {
+
+	public function setForm($form) {
 		$this->fieldPageID->setForm($form);
 		$this->fieldCustomURL->setForm($form);
 		return parent::setForm($form);
 	}
 
-	function setName($name){
+	public function setName($name){
 		$this->fieldPageID->setName("{$name}[PageID]");
 		$this->fieldCustomURL->setName("{$name}[CustomURL]");
 		return parent::setName($name);
@@ -49,7 +49,7 @@ class LinkFormField extends FormField {
 	/**
 	 * @return string
 	 */
-	function Field($properties = array()) {
+	public function Field($properties = array()) {
 		Requirements::javascript(self::$module_dir . '/js/LinkFormField.js');
 		return "<div class=\"fieldgroup LinkFormField \">" .
 			"<div class=\"fieldgroupField LinkFormFieldPageID\">" . 
@@ -60,8 +60,8 @@ class LinkFormField extends FormField {
 			"</div>" . 
 		"</div>";
 	}
-	
-	function setValue($val) {
+
+	public function setValue($val) {
 		$this->value = $val;
 		if(is_array($val)) {
 			$this->fieldPageID->setValue($val['PageID']);
@@ -76,7 +76,7 @@ class LinkFormField extends FormField {
 	 * SaveInto checks if set-methods are available and use them instead of setting the values directly. saveInto
 	 * initiates a new LinkField class object to pass through the values to the setter method.
 	 */
-	function saveInto(DataObjectInterface $dataObject) {
+	public function saveInto(DataObjectInterface $dataObject) {
 		
 		$fieldName = $this->name;
 		if($dataObject->hasMethod("set$fieldName")) {
