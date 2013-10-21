@@ -162,7 +162,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * @return boolean
 	 */
 	function exists(){
-		return ($this->page_id !== null || $this->custom_url !== null );
+		return (!empty($this->page_id) || !empty($this->custom_url));
 	}
 	
 	public function getPageID() {
