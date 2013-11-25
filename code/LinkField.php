@@ -32,7 +32,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @var array $composite_db
 	 */
-	static $composite_db = array(
+	private static $composite_db = array(
 		'PageID' => 'Int',
 		'CustomURL' => 'Varchar(2000)'
 	);
@@ -52,7 +52,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 *  Set to FALSE if you are initializing this field after construction, rather
 	 *  than setting a new value.
 	 */
-	function setValue($value, $record = null, $markChanged = true){
+	public function setValue($value, $record = null, $markChanged = true){
 		
 		if ($value instanceof LinkField && $value->exists()) {
 			$this->setPageID($value->getPageID(), $markChanged);
@@ -87,7 +87,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * Add any custom properties defined in {@link $composite_db}.
 	 * Should make one or more calls to {@link DB::requireField()}.
 	 */
-	function requireField(){
+	public function requireField(){
 		$fields = $this->compositeDatabaseFields();
 		if($fields) foreach($fields as $name => $type){
 			DB::requireField($this->tableName, $this->name.$name, $type);
@@ -107,7 +107,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @param array $manipulation
 	 */
-	function writeToManipulation(&$manipulation) {
+	public function writeToManipulation(&$manipulation) {
 		if($this->getPageID()) {
 			$manipulation['fields'][$this->name.'PageID'] = $this->prepValueForDB((int)$this->getPageID());
 		} else {
@@ -131,7 +131,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @param SQLQuery $query
 	 */
-	function addToQuery(&$query) {
+	public function addToQuery(&$query) {
 		parent::addToQuery($query);
 	}
 	
@@ -140,7 +140,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * Used by {@link DataObject->hasOwnDatabaseField()}.
 	 * @return array
 	 */
-	function compositeDatabaseFields(){
+	public function compositeDatabaseFields(){
 		return static::$composite_db;
 	}
 	
@@ -151,7 +151,7 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @return boolean
 	 */
-	function isChanged(){
+	public function isChanged(){
 		return $this->isChanged;
 	}
 	
@@ -161,8 +161,8 @@ class LinkField extends DBField implements CompositeDBField {
 	 * 
 	 * @return boolean
 	 */
-	function exists(){
-		return (($this->page_id !== null && $this->page_id > 0) || $this->custom_url !== null );
+	public function exists(){
+		return ( ($this->page_id !== null && $this->page_id > 0) || $this->custom_url !== null );
 	}
 	
 	public function getPageID() {
@@ -211,12 +211,12 @@ class LinkField extends DBField implements CompositeDBField {
 	public function __toString() {
 		return (string) $this->getURL();
 	}
-	
-	function forTemplate() {
+
+	public function forTemplate() {
 		return $this->getURL();
 	}
-	
-	function Absolute() {
+
+	public function Absolute() {
 		$relative = $this->getURL();
 		return (Director::is_site_url($relative) && Director::is_relative_url($relative)) 
 			? Controller::join_links(Director::protocolAndHost(), $relative) 
