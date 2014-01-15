@@ -1,0 +1,6 @@
+de_DE:
+    LinkField:
+      SITE: "Aus dem Seitenbaum"
+      URL: "URL"
+      VALIDATION: "Bitte geben Sie eine gültige URL (z.b http://mywebsite.com) ein."
+

@@ -28,8 +28,8 @@ class LinkFormField extends FormField {
 	
 	public function __construct($name, $title = null, $value = null, $form = null) {
 		// naming with underscores to prevent values from actually being saved somewhere
-		$this->fieldCustomURL = new TextField("{$name}[CustomURL]", ' URL', '', 300, $form);
-		$this->fieldPageID = new TreeDropdownField("{$name}[PageID]", '', 'SiteTree', 'ID', 'Title');
+		$this->fieldCustomURL = new TextField("{$name}[CustomURL]", _t('LinkField.URL', 'URL').'<br/>', '', 300, $form);
+		$this->fieldPageID = new TreeDropdownField("{$name}[PageID]", _t('LinkField.SITE', 'Site'), 'SiteTree', 'ID', 'Title');
 		$this->fieldPageID->setForm($form);
 		parent::__construct($name, $title, $value, $form);
 	}
@@ -45,6 +45,20 @@ class LinkFormField extends FormField {
 		$this->fieldCustomURL->setName("{$name}[CustomURL]");
 		return parent::setName($name);
 	}
+
+    public function validate($validator){
+        if(!empty($this->value['CustomURL'])) {
+            if(!filter_var($this->value['CustomURL'], FILTER_VALIDATE_URL)){
+                $validator->validationError(
+                    $this->name,
+                    _t('LinkField.VALIDATION', "Please enter a valid URL (e.g http://mywebsite.com)."),
+                    "validation"
+                );
+                return false;
+            }
+        }
+        return true;
+    }
 	
 	/**
 	 * @return string
@@ -54,7 +68,8 @@ class LinkFormField extends FormField {
 		return "<div class=\"fieldgroup LinkFormField \">" .
 			"<div class=\"fieldgroupField LinkFormFieldPageID\">" . 
 				$this->fieldPageID->SmallFieldHolder() . 
-			"</div>" . 
+			"</div>" .
+            "<p/>".
 			"<div class=\"fieldgroupField LinkFormFieldCustomURL\">" . 
 				$this->fieldCustomURL->SmallFieldHolder() . 
 			"</div>" . 
