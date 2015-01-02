@@ -1,0 +1,24 @@
+{
+    "name": "lrc/silverstripe-link-field",
+    "description": "A SilverStripe field type for having an internal or external link in a single field.",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "field"],
+	"homepage": "https://github.com/lrc/silverstripe-link-field/",
+    "authors": [
+        {
+            "name": "Simon Elvery",
+            "email": "simon@elvery.net"
+        },
+        {
+            "name": "Left, Right & Centre",
+			"email": "hello@leftrightandcentre.com.au"
+        }
+    ],
+    "require": {
+		"silverstripe/framework": "~2.4",
+		"silverstripe/cms": "~2.4"
+    },
+	"support": {
+		"issues": "https://github.com/lrc/silverstripe-link-field/issues?state=open"
+	}
+}
